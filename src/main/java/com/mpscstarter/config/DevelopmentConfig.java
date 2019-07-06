@@ -16,7 +16,6 @@ public class DevelopmentConfig {
 	@Bean
 	public EmailService emailService() {
 		return new MockEmailService();
-		
 	}
 	
 }
