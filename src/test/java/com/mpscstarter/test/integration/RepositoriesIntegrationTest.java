@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import com.mpscstarter.MpscstarterApplication;
 import com.mpscstarter.backend.persistence.domain.backend.Plan;
 import com.mpscstarter.backend.persistence.domain.backend.Role;
 import com.mpscstarter.backend.persistence.domain.backend.User;
@@ -15,11 +14,10 @@ import com.mpscstarter.backend.persistence.domain.backend.UserRole;
 import com.mpscstarter.backend.persistence.repositories.PlanRepository;
 import com.mpscstarter.backend.persistence.repositories.RoleRepository;
 import com.mpscstarter.backend.persistence.repositories.UserRepository;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import com.mpscstarter.enums.PlansEnum;
+import com.mpscstarter.enums.RolesEnum;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
 
@@ -36,10 +34,6 @@ public class RepositoriesIntegrationTest {
 	@Autowired
 	private UserRepository userRepository;
 	
-	
-	private static final int BASIC_PLAN_ID=1;
-	private static final int BASIC_ROLE_ID =1;
-	
 	@Before
 	public void init() {
 		Assert.assertNotNull(planRepository);
@@ -48,33 +42,31 @@ public class RepositoriesIntegrationTest {
 	}
 	@Test
 	public void testCreateNewPlan() throws Exception{
-		Plan basicPlan = createBasicPlan();
+		Plan basicPlan = createBasicPlan(PlansEnum.BASIC);
 		planRepository.save(basicPlan);
-		Optional<Plan> retriedPlan = planRepository.findById(BASIC_PLAN_ID);
+		Optional<Plan> retriedPlan = planRepository.findById(PlansEnum.BASIC.getId());
 		Assert.assertNotNull(retriedPlan);
 	}
 	@Test
 	public void testCreateNewRole()throws Exception{
-		Role role = createBasicRole();
+		Role role = createBasicRole(RolesEnum.BASIC);
 		roleRepository.save(role);
-		Optional<Role> retrievedRole = roleRepository.findById(BASIC_ROLE_ID);
+		Optional<Role> retrievedRole = roleRepository.findById(RolesEnum.BASIC.getId());
 		Assert.assertNotNull(retrievedRole);
 	}
 	
 	@Test
 	public void testNewUser() throws Exception{
-		Plan basicPlan = createBasicPlan();
+		Plan basicPlan = createBasicPlan(PlansEnum.BASIC);
 		planRepository.save(basicPlan);
 		
 		User basicUser = createBasicUser();
 		basicUser.setPlan(basicPlan);
 		
-		Role basicRole = createBasicRole();
+		Role basicRole = createBasicRole(RolesEnum.BASIC);
 		Set<UserRole> userRoles= new HashSet<>();
 		
-		UserRole userRole = new UserRole();
-		userRole.setUser(basicUser);
-		userRole.setRole(basicRole);
+		UserRole userRole = new UserRole(basicUser,basicRole);
 		userRoles.add(userRole);
 		
 		basicUser.getUserRoles().addAll(userRoles);    /// very important. Take care with collection objects
@@ -101,18 +93,14 @@ public class RepositoriesIntegrationTest {
 		
 	}
 	
-	private Plan createBasicPlan() {
-		Plan plan = new Plan();
-		plan.setId(BASIC_PLAN_ID);
-		plan.setName("Basic");
-		return plan;
+	private Plan createBasicPlan(PlansEnum plansEnum) {
+		
+		return new Plan(plansEnum);
 	}
 	
-	private Role createBasicRole() {
-		Role role = new Role();
-		role.setId(BASIC_ROLE_ID);
-		role.setName("ROLE_USER");
-		return role;
+	private Role createBasicRole(RolesEnum rolesEnum) {
+		
+		return new Role(rolesEnum);	
 	}
 	
 	private User createBasicUser() {
