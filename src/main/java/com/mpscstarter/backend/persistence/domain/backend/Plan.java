@@ -8,6 +8,8 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.mpscstarter.enums.PlansEnum;
+
 /**
  * @author Pradipkumar Hinge on 6 July 2019
  *
@@ -23,6 +25,11 @@ public class Plan implements Serializable {
 	
 	public Plan() {
 		super();
+	}
+
+	public Plan(PlansEnum plansEnum) {
+		this.id = plansEnum.getId();
+		this.name=plansEnum.getPlansName();
 	}
 
 	public int getId() {

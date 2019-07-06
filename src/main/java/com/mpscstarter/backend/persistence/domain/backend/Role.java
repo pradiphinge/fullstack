@@ -13,6 +13,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.mpscstarter.enums.RolesEnum;
+
 /**
  * Created by @author Pradipkumar Hinge on July 6, 2019
  *
@@ -34,7 +36,15 @@ public class Role implements Serializable {
 	public Role() {
 		super();
 	}
-
+	/**
+	 * Full constructor
+	 * @param role
+	 */
+	public Role(RolesEnum role) {
+		this.id = role.getId();
+		this.name=role.getRolename();
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -80,8 +90,5 @@ public class Role implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-
 	
 }
