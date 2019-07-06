@@ -1,7 +1,12 @@
 package com.mpscstarter.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.assertj.core.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +24,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	private Environment env;
 	/**
 	 * public urls
 	 * */
@@ -30,11 +37,24 @@ private static final String[] PUBLIC_MATCHERS= {
 		"/",
 		"/about/**",
 		"/contact/**",
-		"/error/**/*"
+		"/error/**/*",
+		"/console/**"
 };
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		List<String> activeProfiles = new ArrayList<String>();   // = Arrays.asList(env.getActiveProfiles());
+		
+		for (String string : env.getActiveProfiles()) {
+			activeProfiles.add(string);
+		}
+		
+		if(activeProfiles.contains("dev")) {
+			http.csrf().disable();
+			http.headers().frameOptions().disable();
+		}
+		
 		http
 			.authorizeRequests()
 			.antMatchers(PUBLIC_MATCHERS).permitAll()
