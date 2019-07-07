@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import com.mpscstarter.backend.service.UserSecurityService;
+
 
 /**
  * Security configuration controller
@@ -24,6 +26,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+	private UserSecurityService userSecurityService;
+	
 	@Autowired
 	private Environment env;
 	/**
@@ -69,11 +74,18 @@ private static final String[] PUBLIC_MATCHERS= {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
 		auth
+			.userDetailsService(userSecurityService);
+	}
+/* in memory Authentication
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+		auth
 			.inMemoryAuthentication()
 			.withUser("user").password("{noop}password")
 			.roles("USER");
 	}
-
+*/
+	
 /*
  * @Bean
     public UserDetailsService userDetailsService() {

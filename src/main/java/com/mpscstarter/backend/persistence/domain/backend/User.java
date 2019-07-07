@@ -4,6 +4,7 @@
 package com.mpscstarter.backend.persistence.domain.backend;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +20,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * 
@@ -26,7 +29,7 @@ import org.hibernate.validator.constraints.Length;
  *
  */
 @Entity
-public class User implements Serializable {
+public class User implements Serializable,UserDetails {
 
 	/* Creates Serial Version UID for Serializable Classes **/
 	private static final long serialVersionUID = 1L;
@@ -60,7 +63,7 @@ public class User implements Serializable {
 	@Column(name="profile_image_url")
 	private String profileImageUrl;
 	
-	@Column(name="strip_customer_id")
+	@Column(name="stripe_customer_id")
 	private String stripeCustomerId;
 	
 	private boolean enabled;
@@ -203,6 +206,29 @@ public class User implements Serializable {
 		User other = (User) obj;
 		if (id != other.id)
 			return false;
+		return true;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		Set<GrantedAuthority>authorities = new HashSet<>();
+		userRoles.forEach(ur->authorities.add(new Authority(ur.getRole().getName())));
+		
+		return authorities;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 	

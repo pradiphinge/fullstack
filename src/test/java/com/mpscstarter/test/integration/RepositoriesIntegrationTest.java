@@ -14,6 +14,7 @@ import com.mpscstarter.backend.persistence.domain.backend.UserRole;
 import com.mpscstarter.backend.persistence.repositories.PlanRepository;
 import com.mpscstarter.backend.persistence.repositories.RoleRepository;
 import com.mpscstarter.backend.persistence.repositories.UserRepository;
+import com.mpscstarter.backend.persistence.repositories.UserRoleRepository;
 import com.mpscstarter.enums.PlansEnum;
 import com.mpscstarter.enums.RolesEnum;
 import com.mpscstarter.utils.UserUtils;
@@ -34,6 +35,9 @@ public class RepositoriesIntegrationTest {
 	private RoleRepository roleRepository;
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private UserRoleRepository userRoleRepository; 
+	
 	
 	@Before
 	public void init() {
@@ -58,25 +62,10 @@ public class RepositoriesIntegrationTest {
 	
 	@Test
 	public void testNewUser() throws Exception{
-		Plan basicPlan = createBasicPlan(PlansEnum.BASIC);
-		planRepository.save(basicPlan);
+	
+		User basicUser = createUser();
 		
-		User basicUser = UserUtils.createBasicUser();
-		basicUser.setPlan(basicPlan);
 		
-		Role basicRole = createBasicRole(RolesEnum.BASIC);
-		Set<UserRole> userRoles= new HashSet<>();
-		
-		UserRole userRole = new UserRole(basicUser,basicRole);
-		userRoles.add(userRole);
-		
-		basicUser.getUserRoles().addAll(userRoles);    /// very important. Take care with collection objects
-		
-		for (UserRole ur : userRoles) {
-			roleRepository.save(ur.getRole());
-		}
-
-		basicUser=userRepository.save(basicUser);
 		Optional<User> newlyCreatedUser=userRepository.findById(basicUser.getId());
 		basicUser = newlyCreatedUser.orElse(null);
 		
@@ -93,6 +82,12 @@ public class RepositoriesIntegrationTest {
 		
 		
 	}
+	@Test
+	public void testDeleteUser() {
+		
+		User basicUser = createUser();
+		userRepository.deleteById(basicUser.getId());
+	}
 	
 	private Plan createBasicPlan(PlansEnum plansEnum) {
 		
@@ -104,6 +99,29 @@ public class RepositoriesIntegrationTest {
 		return new Role(rolesEnum);	
 	}
 	
+	private User createUser() {
+		Plan basicPlan = new Plan(PlansEnum.BASIC);
+		basicPlan = planRepository.save(basicPlan);
+
+		User basicUser = UserUtils.createBasicUser();
+		basicUser.setPlan(basicPlan);
+		
+		Role basicRole = new Role(RolesEnum.BASIC);
+		basicRole=roleRepository.save(basicRole);
+		
+		Set<UserRole> userRoles = new HashSet<>();
+		UserRole userRole = new UserRole(basicUser, basicRole) ;
+		userRoles.add(userRole);
+		
+		basicUser.getUserRoles().addAll(userRoles);
+		
+		basicUser = userRepository.save(basicUser);
+		userRole.setUser(basicUser);
+		userRole.setRole(basicRole);
+		userRole=userRoleRepository.save(userRole);
+		
+		return basicUser;
+	}
 
 	
 }

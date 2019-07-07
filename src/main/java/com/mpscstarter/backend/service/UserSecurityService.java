@@ -1,0 +1,46 @@
+ 
+package com.mpscstarter.backend.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import com.mpscstarter.backend.persistence.domain.backend.User;
+import com.mpscstarter.backend.persistence.repositories.UserRepository;
+
+/**
+ *Created by @author Pradipkumar Hinge on July 7, 2019.
+ *
+ */
+@Service
+public class UserSecurityService implements UserDetailsService {
+
+	/** The application logger*/
+	
+	private static final Logger LOG = LoggerFactory.getLogger(UserSecurityService.class);
+
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		
+		User user = userRepository.findByUsername(username);
+		
+		if(null == user) {
+			
+			LOG.warn("User {} not found",username);
+			throw new UsernameNotFoundException("Username "+username+" not found!" );
+		}
+		System.out.println(user.getUsername() + "  " +user.getPassword());
+		String str = "{noop}".concat(user.getPassword());
+		user.setPassword(str);
+		System.out.println(user.getUsername() + "  " +user.getPassword());
+		return user;
+	}
+
+}
