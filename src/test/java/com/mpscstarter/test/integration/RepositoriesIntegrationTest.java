@@ -16,6 +16,7 @@ import com.mpscstarter.backend.persistence.repositories.RoleRepository;
 import com.mpscstarter.backend.persistence.repositories.UserRepository;
 import com.mpscstarter.enums.PlansEnum;
 import com.mpscstarter.enums.RolesEnum;
+import com.mpscstarter.utils.UserUtils;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -60,7 +61,7 @@ public class RepositoriesIntegrationTest {
 		Plan basicPlan = createBasicPlan(PlansEnum.BASIC);
 		planRepository.save(basicPlan);
 		
-		User basicUser = createBasicUser();
+		User basicUser = UserUtils.createBasicUser();
 		basicUser.setPlan(basicPlan);
 		
 		Role basicRole = createBasicRole(RolesEnum.BASIC);
@@ -103,19 +104,6 @@ public class RepositoriesIntegrationTest {
 		return new Role(rolesEnum);	
 	}
 	
-	private User createBasicUser() {
-		User user = new User();
-		user.setUsername("username");
-		user.setPassword("password");
-		user.setEmail("me@example.com");
-		user.setEnabled(true);
-		user.setCountry("India");
-		user.setDescription("Dummy user");
-		user.setFirstname("firstname");
-		user.setLastname("lastname");
-		user.setPhonenumber("1111111");
-		user.setProfileImageUrl("http://blabla.com/basicuser");
-		return user;
-	}
+
 	
 }
