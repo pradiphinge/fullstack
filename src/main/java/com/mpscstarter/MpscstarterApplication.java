@@ -37,8 +37,10 @@ public class MpscstarterApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 
+		String username = "proUser";
+		String email = "hingepradeepster@gmail.com";		
 		Set<UserRole> userRoles= new HashSet<>();
-		User basicUser =UserUtils.createBasicUser();
+		User basicUser =UserUtils.createBasicUser(username,email);
 		userRoles.add(new UserRole(basicUser, new Role(RolesEnum.PRO)));
 		LOG.debug("Creating user wit username{}",basicUser.getUsername());
 		LOG.info("Creating user wit username{}",basicUser.getUsername());

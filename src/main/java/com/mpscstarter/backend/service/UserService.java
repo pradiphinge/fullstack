@@ -90,7 +90,7 @@ public class UserService {
 		Plan basicPlan = new Plan(PlansEnum.BASIC);
 		basicPlan = planRepository.save(basicPlan);
 
-		User basicUser = UserUtils.createBasicUser();
+		User basicUser = UserUtils.createBasicUser("basicUser","hingepradeepster@gmail.com");
 		basicUser.setPlan(basicPlan);
 		
 		Role basicRole = new Role(RolesEnum.BASIC);

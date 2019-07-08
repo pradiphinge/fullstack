@@ -19,12 +19,14 @@ public class UserUtils {
 	/**
 	 * creates a user with basic attributes set
 	 * @return a User entity
+	 * @param username The username
+	 * @param email The email
 	 * */
-	public static User createBasicUser() {
+	public static User createBasicUser(String username, String email) {
 		User user = new User();
-		user.setUsername("username");
+		user.setUsername(username);
 		user.setPassword("password");
-		user.setEmail("me@example.com");
+		user.setEmail(email);
 		user.setEnabled(true);
 		user.setCountry("India");
 		user.setDescription("Dummy user");

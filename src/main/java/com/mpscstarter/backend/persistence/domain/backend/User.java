@@ -29,7 +29,7 @@ import org.springframework.security.core.userdetails.UserDetails;
  *
  */
 @Entity
-public class User implements Serializable,UserDetails {
+public class User implements Serializable, UserDetails {
 
 	/* Creates Serial Version UID for Serializable Classes **/
 	private static final long serialVersionUID = 1L;
@@ -37,44 +37,48 @@ public class User implements Serializable,UserDetails {
 	public User() {
 		super();
 	}
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
-	
+
+	@Column(unique = true)
 	private String username;
+	
 	private String password;
+	
+	@Column(unique = true)
 	private String email;
-	
-	@Column(name="first_name")
+
+	@Column(name = "first_name")
 	private String firstname;
-	
-	@Column(name="last_name")
+
+	@Column(name = "last_name")
 	private String lastname;
-	
-	@Column(name="phone_number")
+
+	@Column(name = "phone_number")
 	private String phonenumber;
-	
-	@Length(max=500)
+
+	@Length(max = 500)
 	private String description;
-	
+
 	private String country;
-	
-	@Column(name="profile_image_url")
+
+	@Column(name = "profile_image_url")
 	private String profileImageUrl;
-	
-	@Column(name="stripe_customer_id")
+
+	@Column(name = "stripe_customer_id")
 	private String stripeCustomerId;
-	
+
 	private boolean enabled;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="plan_id")
+	@JoinColumn(name = "plan_id")
 	private Plan plan;
 
-	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Set<UserRole> userRoles=new HashSet<>();
-	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<UserRole> userRoles = new HashSet<>();
+
 	public long getId() {
 		return id;
 	}
@@ -211,9 +215,9 @@ public class User implements Serializable,UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Set<GrantedAuthority>authorities = new HashSet<>();
-		userRoles.forEach(ur->authorities.add(new Authority(ur.getRole().getName())));
-		
+		Set<GrantedAuthority> authorities = new HashSet<>();
+		userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName())));
+
 		return authorities;
 	}
 
@@ -231,10 +235,5 @@ public class User implements Serializable,UserDetails {
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
-	
-	
-	
-	
-	
-	
+
 }

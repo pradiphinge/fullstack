@@ -63,7 +63,7 @@ public class RepositoriesIntegrationTest {
 	@Test
 	public void testNewUser() throws Exception{
 	
-		User basicUser = createUser();
+		User basicUser = createUser("basicUser2","b2@gmail.com");
 		
 		
 		Optional<User> newlyCreatedUser=userRepository.findById(basicUser.getId());
@@ -85,7 +85,7 @@ public class RepositoriesIntegrationTest {
 	@Test
 	public void testDeleteUser() {
 		
-		User basicUser = createUser();
+		User basicUser = createUser("test","test@gmail.com");
 		userRepository.deleteById(basicUser.getId());
 	}
 	
@@ -99,11 +99,11 @@ public class RepositoriesIntegrationTest {
 		return new Role(rolesEnum);	
 	}
 	
-	private User createUser() {
+	private User createUser(String username,String email) {
 		Plan basicPlan = new Plan(PlansEnum.BASIC);
 		basicPlan = planRepository.save(basicPlan);
 
-		User basicUser = UserUtils.createBasicUser();
+		User basicUser = UserUtils.createBasicUser(username,email);
 		basicUser.setPlan(basicPlan);
 		
 		Role basicRole = new Role(RolesEnum.BASIC);
