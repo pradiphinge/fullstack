@@ -37,9 +37,7 @@ public class UserSecurityService implements UserDetailsService {
 			throw new UsernameNotFoundException("Username "+username+" not found!" );
 		}
 		System.out.println(user.getUsername() + "  " +user.getPassword());
-		String str = "{noop}".concat(user.getPassword());
-		user.setPassword(str);
-		System.out.println(user.getUsername() + "  " +user.getPassword());
+	
 		return user;
 	}
 
