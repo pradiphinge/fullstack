@@ -6,6 +6,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,6 +31,17 @@ public class MpscstarterApplication implements CommandLineRunner{
 	@Autowired
 	private UserService userService;
 	
+	@Value("${webmaster.username}")
+	private String webmasterUsername;
+
+	@Value("${webmaster.password}")
+	private String webmasterPassword;
+	
+	@Value("${webmaster.email}")
+	private String webmasterEmail;
+	
+	
+	
 	public static void main(String[] args) {
 		SpringApplication.run(MpscstarterApplication.class, args);
 	}
@@ -37,13 +49,12 @@ public class MpscstarterApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 
-		String username = "proUser";
-		String email = "hingepradeepster@gmail.com";		
 		Set<UserRole> userRoles= new HashSet<>();
-		User basicUser =UserUtils.createBasicUser(username,email);
-		userRoles.add(new UserRole(basicUser, new Role(RolesEnum.PRO)));
+		User basicUser =UserUtils.createBasicUser(webmasterUsername,webmasterEmail);
+		userRoles.add(new UserRole(basicUser, new Role(RolesEnum.ADMIN)));
 		LOG.debug("Creating user wit username{}",basicUser.getUsername());
 		LOG.info("Creating user wit username{}",basicUser.getUsername());
+		
 		User user = userService.createUser(basicUser, PlansEnum.PRO, userRoles);
 		LOG.info("user {} created",user.getUsername());
 		//userService.deleteUser((long) 1);
