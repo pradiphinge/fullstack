@@ -36,4 +36,5 @@ public class UserServiceIntegrationTest {
 		Assert.assertNotNull(user);
 		Assert.assertNotNull(user.getId());
 	}
+	
 }

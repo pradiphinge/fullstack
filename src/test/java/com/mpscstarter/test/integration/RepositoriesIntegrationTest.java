@@ -22,6 +22,7 @@ import com.mpscstarter.utils.UserUtils;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.junit.Assert;
 
@@ -87,6 +88,38 @@ public class RepositoriesIntegrationTest {
 		
 		User basicUser = createUser("test","test@gmail.com");
 		userRepository.deleteById(basicUser.getId());
+	}
+	
+	
+	@Test
+	public void testGetUserByEmail() throws Exception {
+		String email = "testFindByEmail@mpscstarter.com";
+		User user = createUser("testFindByEmail", email);
+		
+		User newlyFoundUser = userRepository.findByEmail(user.getEmail());
+		Assert.assertNotNull(newlyFoundUser);
+		Assert.assertNotNull(newlyFoundUser.getId());
+	}
+	
+	@Test
+	public void testPasswordUpdate() throws Exception{
+		
+		String email = "testPasswordUpdate@mpscstarter.com";
+		User user = createUser("testPasswordUpdate", email);
+		
+		Assert.assertNotNull(user);
+		Assert.assertNotNull(user.getId());
+		
+		String newPassword = UUID.randomUUID().toString();
+		
+		userRepository.updateUserPassword(user.getId(), newPassword);
+		
+		Optional<User> nuser = userRepository.findById(user.getId());
+		user = nuser.orElse(null);
+		
+		Assert.assertEquals(newPassword, user.getPassword());
+		
+		
 	}
 	
 	private Plan createBasicPlan(PlansEnum plansEnum) {
