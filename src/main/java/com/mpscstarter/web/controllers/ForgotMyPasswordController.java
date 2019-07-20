@@ -202,7 +202,9 @@ public class ForgotMyPasswordController {
 	 * **********************************/
 	
 	@RequestMapping(value="validatePassword" )
-	public @ResponseBody String validatePassword(@RequestParam("password") String password) {
+	public @ResponseBody String validatePassword(@RequestParam("password") String password,
+												 @RequestParam("confirmPassword") String confirmPassword	
+												) {
 	
 		String msg = ALL_GOOD;
 
@@ -210,8 +212,25 @@ public class ForgotMyPasswordController {
 			msg = "Too short password. Minimum length is 5";
 		}
 		
+		return msg;
+	}
+
+	@RequestMapping(value="validateConfirmPassword" )
+	public @ResponseBody String validateConfirmPassword(@RequestParam("confirmPassword") String confirmPassword,
+														@RequestParam("password") String password
+												) {
+	
+		String msg = ALL_GOOD;
+		
+		if (confirmPassword.length()<5) {
+			msg = "Too short password. Minimum length is 5";
+		}else if (!confirmPassword.equals(password)) {
+			msg = "Passwords do not match";
+		}else {
+			msg =ALL_GOOD;
+		}
 		
 		return msg;
 	}
-	
+
 }
