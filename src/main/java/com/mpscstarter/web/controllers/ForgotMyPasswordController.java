@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mpscstarter.backend.persistence.domain.backend.PasswordResetToken;
 import com.mpscstarter.backend.persistence.domain.backend.User;
@@ -54,6 +55,12 @@ public class ForgotMyPasswordController {
 	private static final String CHANGE_PASSWORD_VIEW_NAME = "/forgotmypassword/changePassword";
 	private static final String PASSWORD_RESET_ATTRIBUTE_NAME = "passwordReset";
 	private static final String MESSAGE_ATTRIBUTE_NAME = "message";
+
+
+	private static final String ALL_GOOD = "";
+	
+	
+	
 	
 	
 	
@@ -185,6 +192,26 @@ public class ForgotMyPasswordController {
 		model.addAttribute(PASSWORD_RESET_ATTRIBUTE_NAME,"true");
 		return CHANGE_PASSWORD_VIEW_NAME;
 		
+	}
+	
+	
+	/* **********************************
+	 * 
+	 * 			AJAX Validations
+	 * 
+	 * **********************************/
+	
+	@RequestMapping(value="validatePassword" )
+	public @ResponseBody String validatePassword(@RequestParam("password") String password) {
+	
+		String msg = ALL_GOOD;
+
+		if (password.length()<5) {
+			msg = "Too short password. Minimum length is 5";
+		}
+		
+		
+		return msg;
 	}
 	
 }
