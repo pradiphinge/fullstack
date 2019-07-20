@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.mpscstarter.backend.service.UserSecurityService;
+import com.mpscstarter.web.controllers.ForgotMyPasswordController;
 
 
 /**
@@ -55,7 +56,8 @@ private static final String[] PUBLIC_MATCHERS= {
 		"/about/**",
 		"/contact/**",
 		"/error/**/*",
-		"/console/**"
+		"/console/**",
+		ForgotMyPasswordController.FORGOT_PASSWORD_URL_MAPPING
 };
 
 	@Override

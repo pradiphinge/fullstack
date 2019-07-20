@@ -36,7 +36,7 @@ public class I18NService {
 	 * @param locale The locale
 	 * @return a message for given messageId and locale
 	 */
-	private String getMessage(String messageId, Locale locale) {
+	public String getMessage(String messageId, Locale locale) {
 		return messageSource.getMessage(messageId,null,locale);
 	}
 	
