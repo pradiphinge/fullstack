@@ -8,4 +8,7 @@ import com.mpscstarter.backend.persistence.domain.backend.Plan;
 @Repository
 public interface PlanRepository extends CrudRepository<Plan, Integer> {
 
+	public Plan findById(int id);
+	
+	
 }

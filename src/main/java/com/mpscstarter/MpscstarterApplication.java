@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mpscstarter.backend.persistence.domain.backend.Role;
 import com.mpscstarter.backend.persistence.domain.backend.User;
 import com.mpscstarter.backend.persistence.domain.backend.UserRole;
+import com.mpscstarter.backend.service.PlanService;
 import com.mpscstarter.backend.service.UserService;
 import com.mpscstarter.enums.PlansEnum;
 import com.mpscstarter.enums.RolesEnum;
@@ -30,6 +31,9 @@ public class MpscstarterApplication implements CommandLineRunner{
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PlanService planService;
 	
 	@Value("${webmaster.username}")
 	private String webmasterUsername;
@@ -49,6 +53,10 @@ public class MpscstarterApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 
+		LOG.info("Creating Basic and Pro plan in the database...");
+		planService.createPlan(PlansEnum.BASIC.getId());
+		planService.createPlan(PlansEnum.PRO.getId());
+		
 		Set<UserRole> userRoles= new HashSet<>();
 		User basicUser =UserUtils.createBasicUser(webmasterUsername,webmasterEmail);
 		userRoles.add(new UserRole(basicUser, new Role(RolesEnum.ADMIN)));

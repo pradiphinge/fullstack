@@ -2,7 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="common/header :: common-header" />
-
+<script type="text/javascript">
+function count()
+{
+  var total=document.getElementById("feedback").value;
+  document.getElementById("total").innerHTML="Total Characters (Max 300):"+total.length;
+}
+</script>
 <body>
 
     <div th:replace="common/navbar :: common-navbar" />
@@ -43,7 +49,8 @@
 
                             <div class="form-group">
                                 <label for="feedback" th:text="#{contact.feedback.form.text}"></label>
-                                <textarea  id="feedback" th:field="*{feedback}" class="form-control"/>
+                                <textarea  id="feedback" th:field="*{feedback}" class="form-control" onkeyup="count();" placeholder="Enter Some Text" maxlength="100"/>
+                                <p id="total">Total Characters(Max 100):0</p>
                             </div>
 
                             <div class="form-group">

@@ -50,7 +50,7 @@ public class RepositoriesIntegrationTest {
 	public void testCreateNewPlan() throws Exception{
 		Plan basicPlan = createBasicPlan(PlansEnum.BASIC);
 		planRepository.save(basicPlan);
-		Optional<Plan> retriedPlan = planRepository.findById(PlansEnum.BASIC.getId());
+		Plan retriedPlan = planRepository.findById(PlansEnum.BASIC.getId());
 		Assert.assertNotNull(retriedPlan);
 	}
 	@Test

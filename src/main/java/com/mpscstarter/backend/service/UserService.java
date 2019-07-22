@@ -124,4 +124,25 @@ public class UserService {
 		LOG.debug("User id {} password updated ", userId);
 		
 	}
+	
+	/**
+	 * returns a user by username if found or null
+	 * @param username
+	 * @return user or null if not found 
+	 * 
+	 */
+	public User findByUserName(String username) {
+		return userRepository.findByUsername(username);
+	}
+	/**
+	 * returns a user by email if found or null
+	 * @param email
+	 * @return user or null if not found 
+	 * 
+	 */
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email);
+	}
+	
 }
+

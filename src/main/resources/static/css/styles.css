@@ -67,3 +67,12 @@ body {
     line-height: 1;
     letter-spacing: -1px;
 }
+
+/*
+* SignUp Form
+*/
+
+/** registration page */
+.fieldError{
+	border : 2px solid red;	
+}
