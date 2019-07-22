@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mpscstarter.backend.persistence.domain.backend.Plan;
 import com.mpscstarter.backend.persistence.domain.backend.Role;
@@ -70,6 +71,7 @@ public class SignUpController {
 	
 	@RequestMapping(value = SIGNUP_URL_MAPPING , method=RequestMethod.POST)
 	public String signUpPost(@RequestParam(name="planId", required = true)int planId,
+							 @RequestParam(name ="file", required = false) MultipartFile file,	
 							 @ModelAttribute(PAYLOAD_MODEL_KEY_NAME)@Valid ProAccoutPayload payload,
 							 ModelMap model
 			) throws IOException{
@@ -133,6 +135,17 @@ public class SignUpController {
 			LOG.debug(payload.toString());
 		}
 				
+		// Stores the image on Amazon S3 and stores the URL in user's record
+		if (file != null && !file.isEmpty()) {
+			String profileImageUrl = null;
+			if(profileImageUrl !=null) {
+				user.setProfileImageUrl(profileImageUrl);
+			}else {
+				LOG.warn("Problem in uploading image to S3. User created without profile image");
+			}
+			
+		}
+		
 		// Auto logins the registered user
 		Authentication auth = new UsernamePasswordAuthenticationToken(registeredUser, null, registeredUser.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
