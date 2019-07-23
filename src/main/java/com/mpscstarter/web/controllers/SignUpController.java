@@ -27,6 +27,7 @@ import com.mpscstarter.backend.persistence.domain.backend.Role;
 import com.mpscstarter.backend.persistence.domain.backend.User;
 import com.mpscstarter.backend.persistence.domain.backend.UserRole;
 import com.mpscstarter.backend.service.PlanService;
+import com.mpscstarter.backend.service.S3Service;
 import com.mpscstarter.backend.service.UserService;
 import com.mpscstarter.enums.PlansEnum;
 import com.mpscstarter.enums.RolesEnum;
@@ -57,7 +58,8 @@ public class SignUpController {
 	private UserService userService;
 	@Autowired
 	private PlanService planService;
-	
+	@Autowired
+	private S3Service s3Service;
 	
 	@RequestMapping(value = SIGNUP_URL_MAPPING , method=RequestMethod.GET)
 	public String signUpGet(@RequestParam("planId")int planId, ModelMap model) {
@@ -137,7 +139,7 @@ public class SignUpController {
 				
 		// Stores the image on Amazon S3 and stores the URL in user's record
 		if (file != null && !file.isEmpty()) {
-			String profileImageUrl = null;
+			String profileImageUrl = s3Service.storeProfileImage(file, payload.getUsername());
 			if(profileImageUrl !=null) {
 				user.setProfileImageUrl(profileImageUrl);
 			}else {
