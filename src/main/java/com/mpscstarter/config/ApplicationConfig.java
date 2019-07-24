@@ -43,16 +43,6 @@ public class ApplicationConfig {
 	
 	@Bean
 	public AmazonS3 s3Client() {
-		//		AWSCredentials credentials = new ProfileCredentialsProvider(awsProfileName).getCredentials();
-		
-		
-		/*AmazonS3 s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(credentials)).build(); 
-	
-		
-		
-		Region region = Region.getRegion(Regions.AP_SOUTH_1);
-		s3Client.setRegion(region);
-		*/
 		
 		BasicAWSCredentials credentials = new BasicAWSCredentials(awsAccessKey, awsSecretAccess);
 		
