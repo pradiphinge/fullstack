@@ -108,6 +108,14 @@
 			<version>2.6</version>
 		</dependency>
 
+		<!-- Stripe Dependency -->
+		<!-- https://mvnrepository.com/artifact/com.stripe/stripe-java -->
+		<dependency>
+			<groupId>com.stripe</groupId>
+			<artifactId>stripe-java</artifactId>
+			<version>10.1.0</version>
+		</dependency>
+
 
 
 	</dependencies>

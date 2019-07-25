@@ -30,6 +30,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 @EntityScan(basePackages = "com.mpscstarter.backend.persistence.domain.backend")
 @EnableTransactionManagement
 @PropertySource("file:///${user.home}/.mpscstarter/application-common.properties")
+@PropertySource("file:///${user.home}/.mpscstarter/stripe.properties")
 public class ApplicationConfig {
 
 	@Value("${aws.s3.profile}")

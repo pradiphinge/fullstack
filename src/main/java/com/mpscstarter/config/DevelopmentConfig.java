@@ -1,6 +1,7 @@
 package com.mpscstarter.config;
 
 import org.h2.server.web.WebServlet;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,13 @@ import com.mpscstarter.backend.service.MockEmailService;
 @PropertySource("file:///${user.home}/.mpscstarter/application-dev.properties")
 public class DevelopmentConfig {
 
+	@Value("${stripe.test.private.key}")
+	private String stripeDevKey;
+	
+	@Bean
+	public String stripeKey() {
+		return stripeDevKey;
+	}
 	@Bean
 	public EmailService emailService() {
 		return new MockEmailService();
