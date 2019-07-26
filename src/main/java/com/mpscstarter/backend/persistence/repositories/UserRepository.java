@@ -27,7 +27,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	 * @return a User Entity given a email or null if not found
 	 */
 	public User findByEmail(String email);
-	
+	@Transactional	
 	@Modifying
 	@Query("update User u set u.password=:password where u.id=:userId")
 	void updateUserPassword(@Param("userId") long userId, @Param("password")String password);
